@@ -20,8 +20,8 @@ COPY . .
 # Build the actual project
 RUN cargo build --release
 
-# Stage 2: Create a smaller runtime image
-FROM debian:buster-slim
+# Stage 2: Use the same image for runtime to avoid glibc version mismatch
+FROM rust:1.72-slim
 
 # Set the working directory
 WORKDIR /usr/src/rust-app
