@@ -1,5 +1,5 @@
 # Stage 1: Build the Rust project
-FROM rust:1.72 AS builder
+FROM rust:1.72-slim AS builder
 
 # Set the working directory inside the container
 WORKDIR /usr/src/rust-app
@@ -20,15 +20,10 @@ COPY . .
 # Build the actual project
 RUN cargo build --release
 
-# Stage 2: Build a smaller runtime image
+# Stage 2: Create a smaller runtime image
 FROM debian:buster-slim
 
-# Install required dependencies (if any) for running the Rust app
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set the working directory for the runtime container
+# Set the working directory
 WORKDIR /usr/src/rust-app
 
 # Copy the compiled binary from the builder stage
